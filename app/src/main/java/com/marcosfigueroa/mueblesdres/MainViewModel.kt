@@ -18,4 +18,11 @@ class MainViewModel(private val repository: Repository): ViewModel() {
             myResponse.value = response
         }
     }
+
+    fun login(usuario: String, password: String) {
+        viewModelScope.launch {
+            val response = repository.login(usuario, password)
+            myResponse.value = response
+        }
+    }
 }

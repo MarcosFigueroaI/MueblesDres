@@ -25,11 +25,21 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // No dark mode
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
         // Hide action bar
         supportActionBar?.hide()
+
+        // Boton menu
+        btnMenu.setOnClickListener {
+            // session
+            sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
+            var editor = sp.edit()
+            editor.putString("sesion", "0")
+            editor.apply()
+
+            // activity
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
 
         // Boton agregar mueble
         btnAgregarMueble.setOnClickListener {
