@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun validar(usuario: String, password: String) {
         if (usuario.isEmpty() || password.isEmpty()) {
-            mostrarAlerta("Error", "Por favor llena todos los campos.")
+            mostrarAlerta("Advertencia", "Por favor llena todos los campos.")
         } else {
             val repository = Repository()
             val viewModelFactory = MainViewModelFactory(repository)
@@ -41,27 +41,37 @@ class LoginActivity : AppCompatActivity() {
             viewModel.login(usuario, password)
             viewModel.myResponse.observe(this, Observer { response ->
                 if (response.isSuccessful) {
-                    // sesion
-                    sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
-                    var editor = sp.edit()
-                    editor.putString("sesion", "1")
-                    editor.apply()
-
-                    // usuario
-                    val listaUsuarios = response.body()?.listaUsuarios
-                    val user: ArrayList<Usuario> = listaUsuarios!!
-                    for (i in user) {
-                        sp = getSharedPreferences("usuario", Context.MODE_PRIVATE)
+                    val success = response.body()?.success
+                    if (success!!) {
+                        // sesion
+                        sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
                         var editor = sp.edit()
-                        editor.putString("nombre", i.nombre)
+                        editor.putString("sesion", "1")
                         editor.apply()
-                    }
 
-                    // activity
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                        // usuario
+                        val listaUsuarios = response.body()?.data
+                        val msg = response.body()?.msg
+                        println(msg)
+                        val user: ArrayList<Usuario> = listaUsuarios!!
+                        for (i in user) {
+                            sp = getSharedPreferences("usuario", Context.MODE_PRIVATE)
+                            var editor = sp.edit()
+                            editor.putString("nombre", i.nombre)
+                            editor.apply()
+                        }
+
+                        // activity
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    } else {
+                        // Success false
+                        val msg = response.body()?.msg
+                        mostrarAlerta("Error", msg!!)
+                    }
                 } else {
-                    println(response.errorBody().toString())
+                    // Response Error
+                    mostrarAlerta("Error", "Problema de conexion, intenta nuevamente.")
                 }
             })
         }
@@ -71,12 +81,12 @@ class LoginActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
             .setTitle(titulo)
             .setMessage(mensaje)
-            .setNegativeButton("Cancelar") { view, _ ->
+            /*.setNegativeButton("Cancelar") { view, _ ->
                 Toast.makeText(this, "Cancel button pressed", Toast.LENGTH_SHORT).show()
                 view.dismiss()
-            }
+            }*/
             .setPositiveButton("Aceptar") { view, _ ->
-                Toast.makeText(this, "Ok button pressed", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "Ok button pressed", Toast.LENGTH_SHORT).show()
                 view.dismiss()
             }
             .setCancelable(false)
