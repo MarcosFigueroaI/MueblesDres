@@ -13,4 +13,8 @@ class Repository {
     suspend fun login(usuario: String, password: String): Response<Data> {
         return RetrofitInstance.api.login(usuario, password)
     }
+
+    suspend fun addMueble(nombre: String, color: String, precio: Int, descripcion: String, cantidad: Int): Response<Data> {
+        return RetrofitInstance.api.addMueble(nombre, color, precio, descripcion, cantidad)
+    }
 }

@@ -25,4 +25,11 @@ class MainViewModel(private val repository: Repository): ViewModel() {
             myResponse.value = response
         }
     }
+
+    fun addMueble(nombre: String, color: String, precio: Int, descripcion: String, cantidad: Int) {
+        viewModelScope.launch {
+            val response = repository.addMueble(nombre, color, precio, descripcion, cantidad)
+            myResponse.value = response
+        }
+    }
 }

@@ -8,6 +8,14 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,22 +26,28 @@
             android:id="@+id/etUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Usuario"/>
+            android:fontFamily="@font/nexa_bold"
+            android:hint="@string/usuario"/>
 
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/nexa_bold"
             android:layout_marginTop="8dp"
             android:inputType="textPassword"
-            android:hint="Password"/>
+            android:hint="@string/password"/>
 
-        <Button
+        <TextView
             android:id="@+id/btnEntrar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="24dp"
-            android:text="Entrar"/>
+            android:fontFamily="@font/nexa_bold"
+            android:gravity="center"
+            android:text="@string/boton_entrar"
+            android:textColor="@color/black"
+            android:textSize="22sp"/>
 
     </LinearLayout>
 

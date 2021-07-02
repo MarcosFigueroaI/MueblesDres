@@ -19,4 +19,14 @@ interface Api {
         @Field("password") password: String
     ): Response<Data>
 
+    @FormUrlEncoded
+    @POST("api/addMueble.php")
+    suspend fun addMueble(
+        @Field("nombre") nombre: String,
+        @Field("color") color: String,
+        @Field("precio") precio: Int,
+        @Field("descripcion") descripcion: String,
+        @Field("cantidad") cantidad: Int,
+    ): Response<Data>
+
 }

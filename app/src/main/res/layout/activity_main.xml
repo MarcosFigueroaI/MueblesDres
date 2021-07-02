@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nexa_bold"
-            android:text="Mis muebles"
+            android:text="@string/titulo_mis_muebles"
             android:textColor="@color/black"
             android:textSize="32sp"/>
 
@@ -54,7 +54,7 @@
         android:layout_height="50dp"
         android:fontFamily="@font/nexa_bold"
         android:gravity="center"
-        android:text="Agregar mueble"
+        android:text="@string/boton_agregar_mueble"
         android:textColor="@color/black"
         android:textSize="22sp"/>
 

@@ -6,18 +6,21 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.marcosfigueroa.mueblesdres.model.Usuario
 import com.marcosfigueroa.mueblesdres.repository.Repository
+import com.marcosfigueroa.mueblesdres.utils.Alertas
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var sp: SharedPreferences
     private lateinit var viewModel: MainViewModel
+    var alerta = Alertas()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +36,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun validar(usuario: String, password: String) {
         if (usuario.isEmpty() || password.isEmpty()) {
-            mostrarAlerta("Advertencia", "Por favor llena todos los campos.")
+            alerta.mostrarAlerta(this, "Advertencia", "Por favor llena todos los campos.")
         } else {
+            // Mostrar progress
+                mostrarProgress()
+            //
             val repository = Repository()
             val viewModelFactory = MainViewModelFactory(repository)
             viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
@@ -51,8 +57,6 @@ class LoginActivity : AppCompatActivity() {
 
                         // usuario
                         val listaUsuarios = response.body()?.data
-                        val msg = response.body()?.msg
-                        println(msg)
                         val user: ArrayList<Usuario> = listaUsuarios!!
                         for (i in user) {
                             sp = getSharedPreferences("usuario", Context.MODE_PRIVATE)
@@ -65,33 +69,27 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()
                     } else {
+                        // Ocultar progress
+                            ocultarProgress()
                         // Success false
                         val msg = response.body()?.msg
-                        mostrarAlerta("Error", msg!!)
+                        alerta.mostrarAlerta(this, "Error", msg!!)
                     }
                 } else {
+                    // Ocultar progress
+                    ocultarProgress()
                     // Response Error
-                    mostrarAlerta("Error", "Problema de conexion, intenta nuevamente.")
+                    alerta.mostrarAlerta(this, "Error", "Problema de conexion, intenta nuevamente.")
                 }
             })
         }
     }
 
-    private fun mostrarAlerta(titulo: String, mensaje: String) {
-        val dialog = AlertDialog.Builder(this)
-            .setTitle(titulo)
-            .setMessage(mensaje)
-            /*.setNegativeButton("Cancelar") { view, _ ->
-                Toast.makeText(this, "Cancel button pressed", Toast.LENGTH_SHORT).show()
-                view.dismiss()
-            }*/
-            .setPositiveButton("Aceptar") { view, _ ->
-                //Toast.makeText(this, "Ok button pressed", Toast.LENGTH_SHORT).show()
-                view.dismiss()
-            }
-            .setCancelable(false)
-            .create()
+    private fun mostrarProgress() {
+        progressBar.visibility = View.VISIBLE
+    }
 
-        dialog.show()
+    private fun ocultarProgress() {
+        progressBar.visibility = View.GONE
     }
 }

@@ -13,6 +13,7 @@ import com.marcosfigueroa.mueblesdres.adapter.MyAdapter
 import com.marcosfigueroa.mueblesdres.adapter.OnItemClickListener
 import com.marcosfigueroa.mueblesdres.model.Mueble
 import com.marcosfigueroa.mueblesdres.repository.Repository
+import com.marcosfigueroa.mueblesdres.utils.Alertas
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), OnItemClickListener {
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var sp: SharedPreferences
     private lateinit var viewModel: MainViewModel
     var adapterMuebles = MyAdapter(this)
+    var listaMuebles = arrayListOf<Mueble>()
+    var alerta = Alertas()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +57,14 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         viewModel.getMuebles()
         viewModel.myResponse.observe(this, Observer { response ->
             if (response.isSuccessful) {
-                response.body()?.let { adapterMuebles.setData(it?.listaMuebles) }
+                // success true
+                listaMuebles = response.body()?.listaMuebles!!
+                adapterMuebles.setData(listaMuebles)
             } else {
-                println(response.errorBody().toString())
-                println(response.code().toString())
+                // error successful
+                val error = response.code().toString()
+                val errorBody = response.errorBody().toString()
+                alerta.mostrarAlerta(this, error, errorBody)
             }
         })
 

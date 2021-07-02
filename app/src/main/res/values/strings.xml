@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Muebles Dres</string>
+
+    <string name="boton_regresar">Regresar</string>
+    <string name="boton_guardar">Guardar</string>
+    <string name="boton_entrar">Entrar</string>
+    <string name="boton_agregar_mueble">Agregar mueble</string>
+
+    <string name="titulo_agregar_mueble">Agregar mueble</string>
+    <string name="titulo_mis_muebles">Mis muebles</string>
+
+    <string name="usuario">Usuario</string>
+    <string name="password">Password</string>
+    <string name="nombre_mueble">Mueble</string>
+    <string name="color_mueble">Color</string>
+    <string name="precio_mueble">Precio</string>
+    <string name="descripcion_mueble">Descripcion</string>
+    <string name="cantidad_mueble">Cantidad</string>
 </resources>
