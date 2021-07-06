@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -27,27 +28,20 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         // Hide action bar
         supportActionBar?.hide()
-
         // Boton menu
         btnMenu.setOnClickListener {
-            // session
-            sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
-            var editor = sp.edit()
-            editor.putString("sesion", "0")
-            editor.apply()
-
-            // activity
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+            cerrarSesion()
         }
-
         // Boton agregar mueble
         btnAgregarMueble.setOnClickListener {
-            startActivity(Intent(this, AgregarMuebleActivity::class.java))
+            agregarMueble()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         setupRecyclerview()
 
@@ -57,22 +51,37 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         viewModel.getMuebles()
         viewModel.myResponse.observe(this, Observer { response ->
             if (response.isSuccessful) {
-                // success true
+                // hide progress bar
+                progressBar.visibility = View.GONE
+
                 listaMuebles = response.body()?.listaMuebles!!
                 adapterMuebles.setData(listaMuebles)
             } else {
-                // error successful
                 val error = response.code().toString()
                 val errorBody = response.errorBody().toString()
                 alerta.mostrarAlerta(this, error, errorBody)
             }
         })
+    }
 
+    private fun cerrarSesion() {
+        // cerrar sesion
+        sp = getSharedPreferences("sesion", Context.MODE_PRIVATE)
+        var editor = sp.edit()
+        editor.putString("sesion", "0")
+        editor.apply()
+
+        // other activity
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
+
+    private fun agregarMueble() {
+        startActivity(Intent(this, AgregarMuebleActivity::class.java))
     }
 
     private fun setupRecyclerview() {
         recyclerView.adapter = adapterMuebles
-        //recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
@@ -86,7 +95,6 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         val intent = Intent(this, DetalleMuebleActivity::class.java).apply {
             putExtra("mueble", item)
         }
-
         //startActivityIntent
         startActivity(intent)
     }

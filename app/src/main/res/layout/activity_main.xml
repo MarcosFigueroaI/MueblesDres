@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp"
+        android:layout_margin="16dp"
         android:orientation="horizontal">
 
         <TextView
@@ -32,30 +32,46 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:indeterminate="true"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"/>
+        android:layout_height="50dp">
 
-    <TextView
-        android:id="@+id/btnAgregarMueble"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:fontFamily="@font/nexa_bold"
-        android:gravity="center"
-        android:text="@string/boton_agregar_mueble"
-        android:textColor="@color/black"
-        android:textSize="22sp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"/>
+
+        <TextView
+            android:id="@+id/btnAgregarMueble"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:fontFamily="@font/nexa_bold"
+            android:gravity="center"
+            android:text="@string/boton_agregar_mueble"
+            android:textColor="@color/black"
+            android:textSize="22sp"/>
+
+    </RelativeLayout>
 
 </LinearLayout>
